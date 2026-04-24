@@ -1,0 +1,25 @@
+workflow (.github/workflows/written-standup.yml):
+name: Written Standup Reminder
+
+on:
+  schedule:
+    # Runs at 12:00 UTC on Fridays
+    - cron: '0 12 * * 5'
+  workflow_dispatch: # Allows manual triggering for testing
+
+jobs:
+  send-standup-reminder:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+
+    steps:
+      - name: Send Google Chat message
+        env:
+          GOOGLE_CHAT_WEBHOOK_URL: ${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}
+        run: |
+          curl -sS --fail-with-body -X POST \
+            -H "Content-Type: application/json" \
+            -d '{
+              "text": "Happy Friday, team! \n 📋 Please, drop your updates when you get a sec. \n\n And a gentle nudge on 5/15 and Tempo before you log off. \n\n Have a great weekend! 🙌☀️"
+            }' \
+            "$GOOGLE_CHAT_WEBHOOK_URL"
