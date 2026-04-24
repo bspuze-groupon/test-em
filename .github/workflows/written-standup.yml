@@ -1,4 +1,3 @@
-workflow (.github/workflows/written-standup.yml):
 name: Written Standup Reminder
 
 on:
